@@ -1,0 +1,65 @@
+;Examples of DMA for SNES
+
+;DMA from Palette_Copy to CGRAM
+	A8
+	XY16
+	stz $2121 ; cg address = zero
+	
+	stz $4300 ; transfer mode 0 = 1 register write once
+	lda #$22  ; $2122 palette data
+	sta $4301 ; destination
+	ldx #.loword(Full_Palette)
+	stx $4302 ; source
+	lda #^Full_Palette
+	sta $4304 ; bank
+	ldx #512
+	stx $4305 ; length
+	lda #1
+	sta $420b ; start dma, channel 0
+	
+	
+	
+;DMA from Tiles to VRAM	
+	A8
+	XY16
+	lda #$80
+	sta $2115 ;  set the increment mode +1
+	ldx #$0000
+	stx $2116 ;  set an address in the vram of $0000
+			  ; (and $2117)
+	lda #1
+	sta $4300 ; transfer mode, 2 registers 1 write
+			  ; $2118 and $2119 are a pair Low/High
+	lda #$18  ; $2118 vram data
+	sta $4301 ; destination
+	ldx #.loword(Tiles)
+	stx $4302 ; source
+	lda #^Tiles
+	sta $4304 ; bank
+	ldx #$2000
+	stx $4305 ; length
+	lda #1
+	sta $420b ; start dma, channel 0
+	
+	
+	
+;DMA from OAM_BUFFER to OAM
+	A8
+	XY16
+	ldx #$0000
+	stx $2102 ; oam address (and $2103)
+	
+	stz $4300 ; transfer mode 0 = 1 register write once
+	lda #4 ;$2104 oam data
+	sta $4301 ; destination, oam data
+	ldx #.loword(OAM_BUFFER)
+	stx $4302 ; source
+	lda #^OAM_BUFFER
+	sta $4304 ; bank
+	ldx #544
+	stx $4305 ; length
+	lda #1
+	sta $420b ; start dma, channel 0
+	rts
+	
+	
