@@ -22,7 +22,7 @@ main:
 	
 
 	
-; DMA from Palette_Copy to CGRAM
+; DMA from BG_Palette to CGRAM
 	A8
 	stz pal_addr ; $2121 cg address = zero
 
