@@ -60,6 +60,6 @@
 	stx $4305 ; length
 	lda #1
 	sta $420b ; start dma, channel 0
-	rts
+
 	
 	
